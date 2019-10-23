@@ -34,30 +34,96 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room road1, road2, road3, road4, road5, dadsHouse, sadLake, momsHouse, friendA, friendB, icecreamShop,
+            abandonedHouse, mysteryX, work, plotOfBMovie, lectureHall, collegeLab, collegeForest, mtCool, secretLab;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        // main roadway
+        road1 = new Room("outside at the end of the road");
+        road2 = new Room("outside on the road");
+        road3 = new Room("outside on the road");
+        road4 = new Room("outside on the road");
+        road5 = new Room("outside at the end of the road");
+        // the rest of the rooms houses, shops, college...
+        dadsHouse = new Room("in your dads house");
+        sadLake = new Room("outside next to the sad lake");
+        momsHouse = new Room("in your moms house");
+        friendA = new Room("in your friend A's house");
+        friendB = new Room("in your friend B's house");
+        icecreamShop = new Room("in the icecream shop");
+        abandonedHouse = new Room("in a abandoned house, its creepy in here");
+        mysteryX = new Room("in mysteryX");
+        work = new Room("at your work");
+        plotOfBMovie = new Room("plot of b movie");
+        lectureHall = new Room("in the lecture hall at the college");
+        collegeLab = new Room("in the college lab");
+        collegeForest = new Room("in the forest behind the college");
+        mtCool = new Room("on top of Mt Cool that makes you cool");
+        secretLab = new Room("in a hidden secret lab");
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        // for each room list exits in order of north, east, south, west.
+        // set up the roadway
+        road1.setExit("north", momsHouse);
+        road1.setExit("south", dadsHouse);
+        road1.setExit("west", road2);
+        
+        road2.setExit("north", friendA);
+        road2.setExit("east", road1);
+        road2.setExit("south", icecreamShop);
+        road2.setExit("west", road3);
+        
+        road3.setExit("north", abandonedHouse);
+        road3.setExit("east", road2);
+        road3.setExit("south", friendB);
+        road3.setExit("west", road4);
+        
+        road4.setExit("north", mysteryX);
+        road4.setExit("east", road3);
+        road4.setExit("south", work);
+        road4.setExit("west", road3);
+        
+        road5.setExit("north", lectureHall);
+        road5.setExit("east", road4);
+        road5.setExit("south", plotOfBMovie);
+        
+        // set up all the rooms, houses...
+        dadsHouse.setExit("north", road1);
+        dadsHouse.setExit("south", sadLake);
+        
+        sadLake.setExit("north", dadsHouse);
+        
+        momsHouse.setExit("south", road1);
+        
+        friendA.setExit("south", road2);
+        
+        friendB.setExit("north", road3);
+        
+        icecreamShop.setExit("north", road2);
+        
+        abandonedHouse.setExit("south", road3);
+        
+        mysteryX.setExit("south", road4);
+        
+        work.setExit("north", road4);
+        
+        plotOfBMovie.setExit("north", road5);
+        
+        lectureHall.setExit("north", collegeLab);
+        lectureHall.setExit("south", road5);
+        
+        collegeLab.setExit("east", collegeForest);
+        collegeLab.setExit("south", lectureHall);
+        
+        collegeForest.setExit("east", mtCool);
+        collegeForest.setExit("west", collegeLab);
+        
+        mtCool.setExit("north", secretLab);
+        mtCool.setExit("west", collegeForest);
+        
+        secretLab.setExit("south", mtCool);
 
-        theater.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        currentRoom = dadsHouse;  // start game at dads house
     }
 
     /**
