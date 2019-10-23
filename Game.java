@@ -118,6 +118,14 @@ public class Game
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+                
+            case LOOK:
+                System.out.println(currentRoom.getLongDescription());
+                break;
+                
+            case DANCE:
+                System.out.println("Calm down this isn't Fortnite.");
+                break;
         }
         return wantToQuit;
     }
