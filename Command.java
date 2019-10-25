@@ -13,8 +13,8 @@
  *
  * If the command had only one word, then the second word is <null>.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Nicholas Lindgren and Steve Cate
+ * @version 10/24/19
  */
 
 public class Command

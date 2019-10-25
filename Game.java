@@ -11,8 +11,8 @@
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 10/21/2019
+ * @author Nicholas Lindgren and Steve Cate
+ * @version 10/24/19
  */
 
 public class Game 
@@ -34,6 +34,7 @@ public class Game
      */
     private void createRooms()
     {
+        // all the rooms that are needed for the game
         Room road1, road2, road3, road4, road5, dadsHouse, sadLake, momsHouse, friendA, friendB, icecreamShop,
             abandonedHouse, mysteryX, work, plotOfBMovie, lectureHall, collegeLab, collegeForest, mtCool, secretLab;
       
