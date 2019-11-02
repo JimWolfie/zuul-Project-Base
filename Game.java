@@ -40,27 +40,27 @@ public class Game
       
         // create the rooms
         // main roadway
-        road1 = new Room("outside at the end of the road");
-        road2 = new Room("outside on the road");
-        road3 = new Room("outside on the road");
-        road4 = new Room("outside on the road");
-        road5 = new Room("outside at the end of the road");
+        road1 = new Room("outside at the end of the road", "road1");
+        road2 = new Room("outside on the road", "road2");
+        road3 = new Room("outside on the road", "road3");
+        road4 = new Room("outside on the road", "road4");
+        road5 = new Room("outside at the end of the road", "road5");
         // the rest of the rooms houses, shops, college...
-        dadsHouse = new Room("in your dads house");
-        sadLake = new Room("outside next to the sad lake");
-        momsHouse = new Room("in your moms house");
-        friendA = new Room("in your friend A's house");
-        friendB = new Room("in your friend B's house");
-        icecreamShop = new Room("in the icecream shop");
-        abandonedHouse = new Room("in a abandoned house, its creepy in here");
-        mysteryX = new Room("in mysteryX");
-        work = new Room("at your work");
-        plotOfBMovie = new Room("plot of b movie");
-        lectureHall = new Room("in the lecture hall at the college");
-        collegeLab = new Room("in the college lab");
-        collegeForest = new Room("in the forest behind the college");
-        mtCool = new Room("on top of Mt Cool that makes you cool");
-        secretLab = new Room("in a hidden secret lab");
+        dadsHouse = new Room("in your dads house", "dadsHouse");
+        sadLake = new Room("outside next to the sad lake", "sadLake");
+        momsHouse = new Room("in your moms house", "momsHouse");
+        friendA = new Room("in your friend A's house", "friendA");
+        friendB = new Room("in your friend B's house", "friendB");
+        icecreamShop = new Room("in the icecream shop", "icecreamShop");
+        abandonedHouse = new Room("in a abandoned house, its creepy in here", "abandonedHouse");
+        mysteryX = new Room("in mysteryX", "mysteryX");
+        work = new Room("at your work", "work");
+        plotOfBMovie = new Room("plot of b movie", "plotOfBMovie");
+        lectureHall = new Room("in the lecture hall at the college", "lectureHall");
+        collegeLab = new Room("in the college lab", "collegeLab");
+        collegeForest = new Room("in the forest behind the college", "collegeForest");
+        mtCool = new Room("on top of Mt Cool that makes you cool", "mtCool");
+        secretLab = new Room("in a hidden secret lab", "secretLab");
         
         // initialise room exits
         // for each room list exits in order of north, east, south, west.
@@ -187,7 +187,7 @@ public class Game
                 break;
                 
             case LOOK:
-                System.out.println(currentRoom.getLongDescription());
+                lookObject(command);
                 break;
                 
             case DANCE:
@@ -254,4 +254,31 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+    private void lookObject(Command command)
+    {
+        //genericized print descriotion of items and rooms
+         
+       
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what to print...
+            System.out.println("Look at what?");
+            return;
+        }
+        
+        String name = command.getSecondWord(); //giben by player
+        
+        
+        if (currentRoom.isName(name))
+        {
+            //print out the description 
+            System.out.println(currentRoom.getLongDescription());
+        }
+        else
+        {
+            System.out.println("you can't see that from here");
+        }
+        
+    
+    
+}
 }

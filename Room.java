@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -18,21 +19,37 @@ import java.util.Iterator;
 
 public class Room 
 {
+    private String name;
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
-
+    private HashMap<String, Room> exits;// stores exits of this room.
+    private ArrayList<Item> itemList;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
-     * @param description The room's description.
+     * @param description The room's name
      */
-    public Room(String description) 
+    public Room(String description, String name) 
     {
         this.description = description;
+        this.name = name;
         exits = new HashMap<>();
+        itemList = new ArrayList<Item>();
     }
-
+    /**
+     * Creates a shallow copy of the hash map for reference reasons.
+     * not implemented but there for completeness sake
+     * @param name - string of obj you want to reference
+     * @return clone - pointer to the object's hashmap
+     
+    public HashMap clonedRoom ()
+    {
+        
+        return (HashMap)exits.clone();
+        
+    }*/
+    
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
@@ -40,7 +57,44 @@ public class Room
      */
     public void setExit(String direction, Room neighbor) 
     {
-        exits.put(direction, neighbor);
+        exits.put(direction, neighbor); //defines neighbors 
+        exits.putIfAbsent("self", this); //defines itself as its own neighbor
+        //self defined for completion reasons 
+    }
+    /**
+     * addNewItem
+     * constructs an item and adds it to the list.
+     * also sets the item's hashmap 
+     * @param description
+     * @param name
+     * @param weight
+     */
+    public void addNewItem(String description, String name, int weight)
+    {
+        Item i = new Item(description, name, weight); //make new item
+        i.moveItem(this); //sets the hashmap in the item class to the calling object
+        itemList.add(i); //add to list
+        
+    }
+    /**
+     * addItemFromLocal
+     * finds 
+     * @todo add in code
+     * @param index - index of the item of this object's arraylist. 
+     * @param destination- arraylist of the object you want to add the item to
+     */
+    public void addItemFromLocal (int index, ArrayList<Item> destination)
+    {
+        
+    }
+    /**
+     * printItemIndex
+     * prints a string with this object's arraylist and index
+     * @todo add in code
+     * 
+     */
+    public void printItemIndex()
+    {
     }
 
     /**
@@ -87,6 +141,22 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    public boolean isName (String name)
+    {
+        if(this.name.equals(name))
+        {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * toString
+     * @overrides toString
+     */
+    public String toString ()
+    {
+        return name;
     }
 }
 
