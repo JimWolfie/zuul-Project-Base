@@ -10,7 +10,6 @@ import java.util.Iterator;
  */
 public class Item
 {
-    // instance variables - replace the example below with your own
     private String description;
     private String name;
     private int weight;
