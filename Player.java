@@ -12,7 +12,7 @@ public class Player
     // instance variables - replace the example below with your own
     private String name;
     private Room currentRoom;
-   
+    private Inventory itemList;
 
     /**
      * Constructor for objects of class Player
@@ -21,6 +21,7 @@ public class Player
     {
         this.name = name;
         this.currentRoom = currentRoom;
+        this.itemList = new Inventory(this);
     }
 
     /**
@@ -32,5 +33,17 @@ public class Player
     {
         // put your code here
         return name;
+    }
+    public Room currentRoom()
+    {
+        return currentRoom;
+    }
+    public void currentRoomNew(Room nextRoom)
+    {
+        this.currentRoom = nextRoom;
+    }
+    public Inventory itemList()
+    {
+        return this.itemList;
     }
 }

@@ -18,7 +18,8 @@
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    
+    private Player pc;
         
     /**
      * Create the game and initialise its internal map.
@@ -123,8 +124,10 @@ public class Game
         mtCool.setExit("west", collegeForest);
         
         secretLab.setExit("south", mtCool);
+        
+        this.pc = new Player ("player", dadsHouse);
 
-        currentRoom = dadsHouse;  // start game at dads house
+        //currentRoom = dadsHouse;  // start game at dads house
     }
 
     /**
@@ -155,7 +158,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(pc.currentRoom().getLongDescription());
     }
 
     /**
@@ -193,6 +196,13 @@ public class Game
             case DANCE:
                 System.out.println("Calm down this isn't Fortnite.");
                 break;
+            
+            case TAKE:
+                
+                break;
+                 
+            case DROP:
+                break;
         }
         return wantToQuit;
     }
@@ -228,14 +238,14 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = pc.currentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            pc.currentRoomNew(nextRoom);
+            System.out.println(pc.currentRoom().getLongDescription());
         }
     }
 
@@ -254,31 +264,61 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+    /**
+     * lookObject
+     * takes a command object and then returns an object's description based on the second word. 
+     * @param command 
+     */
     private void lookObject(Command command)
     {
-        //genericized print descriotion of items and rooms
-         
-       
-        if(!command.hasSecondWord()) {
+        if(!command.hasSecondWord()) 
+        {
             // if there is no second word, we don't know what to print...
             System.out.println("Look at what?");
             return;
         }
-        
         String name = command.getSecondWord(); //giben by player
-        
-        
-        if (currentRoom.isName(name))
+        if (pc.currentRoom().isName(name))
         {
             //print out the description 
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(pc.currentRoom().getLongDescription());
         }
         else
         {
             System.out.println("you can't see that from here");
         }
-        
+    }
+    /**
+     * take 
+     * takes the name of an item as a second word and adds it to inventory of 
+     * @param commmand 
+     */
     
-    
-}
+    private void take (Command command)
+    {
+         if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("take what?");
+            return;
+        }
+        String name = command.getSecondWord();
+        pc.currentRoom().itemList().addItemFromLocal(name, pc.itemList());
+    }
+    /**
+     * drop
+     * takes the name of an item as a second word and adds it to the room
+     * @param command
+     */
+    private void drop(Command command)
+    {
+         if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("drop what?");
+            return;
+        }
+        String name = command.getSecondWord();
+        pc.itemList().addItemFromLocal(name, pc.currentRoom().itemList());
+    }
 }

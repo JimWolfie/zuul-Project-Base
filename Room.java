@@ -22,7 +22,7 @@ public class Room
     private String name;
     private String description;
     private HashMap<String, Room> exits;// stores exits of this room.
-    private ArrayList<Item> itemList;
+    private Inventory itemList;
     
     /**
      * Create a room described "description". Initially, it has
@@ -34,22 +34,10 @@ public class Room
     {
         this.description = description;
         this.name = name;
-        exits = new HashMap<>();
-        itemList = new ArrayList<Item>();
+        this.exits = new HashMap<>();
+        this.itemList = new Inventory(this);
     }
-    /**
-     * Creates a shallow copy of the hash map for reference reasons.
-     * not implemented but there for completeness sake
-     * @param name - string of obj you want to reference
-     * @return clone - pointer to the object's hashmap
-     
-    public HashMap clonedRoom ()
-    {
-        
-        return (HashMap)exits.clone();
-        
-    }*/
-    
+
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
@@ -61,41 +49,8 @@ public class Room
         exits.putIfAbsent("self", this); //defines itself as its own neighbor
         //self defined for completion reasons 
     }
-    /**
-     * addNewItem
-     * constructs an item and adds it to the list.
-     * also sets the item's hashmap 
-     * @param description
-     * @param name
-     * @param weight
-     */
-    public void addNewItem(String description, String name, int weight)
-    {
-        Item i = new Item(description, name, weight); //make new item
-        i.moveItem(this); //sets the hashmap in the item class to the calling object
-        itemList.add(i); //add to list
-        
-    }
-    /**
-     * addItemFromLocal
-     * finds 
-     * @todo add in code
-     * @param index - index of the item of this object's arraylist. 
-     * @param destination- arraylist of the object you want to add the item to
-     */
-    public void addItemFromLocal (int index, ArrayList<Item> destination)
-    {
-        
-    }
-    /**
-     * printItemIndex
-     * prints a string with this object's arraylist and index
-     * @todo add in code
-     * 
-     */
-    public void printItemIndex()
-    {
-    }
+   
+    
 
     /**
      * @return The short description of the room
@@ -114,7 +69,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getExitString() ;
     }
 
     /**
@@ -124,6 +79,7 @@ public class Room
      */
     private String getExitString()
     {
+        itemList.printItemIndex();
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
@@ -142,6 +98,10 @@ public class Room
     {
         return exits.get(direction);
     }
+    /**
+     * isName
+     * boolean to check if the calling name is the same as the name of the  object
+     */
     public boolean isName (String name)
     {
         if(this.name.equals(name))
@@ -158,5 +118,11 @@ public class Room
     {
         return name;
     }
+    public Inventory itemList()
+    {
+        return this.itemList;
+    }
+    
+    
 }
 

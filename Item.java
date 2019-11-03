@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 /**
  * Item class.
  * similar to the room class
@@ -13,7 +14,7 @@ public class Item
     private String description;
     private String name;
     private int weight;
-    private HashMap<String, Object> location; 
+    
 
     /**
      * Constructor for objects of class Item
@@ -27,7 +28,6 @@ public class Item
         this.description = description;
         this.name = name;
         this.weight = weight;
-        this.location = new HashMap<String, Object>();
         
        
     }
@@ -42,36 +42,9 @@ public class Item
         this.description = i.giveDescription();
         this.name = i.giveName();
         this.weight = i.giveWeight();
-        this.location = new HashMap<String, Object>();
-        this.location.put(this.name, i.returnLocation());
+       
     }
-    /**
-     * giveLocation
-     * String representation of location object
-     * @return name -
-     */
-    public String giveLocation()
-    {
-        if(!location.isEmpty())
-        {
-            Object t = location.get(this.name);
-            
-            return t.toString();
-        }
-        return null; 
-        
-    }
-    /**
-     * moveItem
-     * assigns the item to a location
-     * locations can be inventory
-     * @param location - room / player its found on
-     */
-    public void moveItem(Object local)
-    {
-        location.clear();
-        location.put(this.name, local); //sets location    
-    }
+
     /**
      * giveName
      * @return name
@@ -96,14 +69,7 @@ public class Item
     {
         return description;
     }
-    /**
-     * returnLocation
-     * @return- a reference to the object in the hashmap to reassign. 
-     */
-    public Object returnLocation()
-    {
-        return location.get(this.name);
-    }
+    
        /**
      * printDescription
      * prints the description of the item
@@ -132,5 +98,7 @@ public class Item
         // put your code here
        System.out.print(""+weight); 
     }
+    
+    
     
 }
