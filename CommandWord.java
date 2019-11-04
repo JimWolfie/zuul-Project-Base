@@ -1,3 +1,4 @@
+
 /**
  * Representations for all the valid command words for the game
  * along with a string in a particular language.
@@ -9,7 +10,10 @@ public enum CommandWord
 {
     // A value for each command word along with its
     // corresponding user interface string.
-    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?"), LOOK("look"), DANCE("dance"), BACK("back");
+
+    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?"), LOOK("look"), DANCE("dance"), TAKE("take"), DROP("drop"),
+    ITEMS("items"), EAT("eat"), BACK("back");
+
     
     // The command string.
     private String commandString;

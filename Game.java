@@ -22,6 +22,8 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private ArrayList<Room> retraceSteps; // used for the back command to retrace steps
+    private Player pc;
+
         
     /**
      * Create the game and initialise its internal map.
@@ -30,8 +32,9 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        this.pc = new Player ("player", dadsHouse);
         retraceSteps = new ArrayList<Room>();
-        retraceSteps.add(currentRoom); // this is the last place you can go back to 
+        retraceSteps.add(pc.currentRoom()); // this is the last place you can go back to 
     }
 
     /**
@@ -45,27 +48,27 @@ public class Game
       
         // create the rooms
         // main roadway
-        road1 = new Room("outside at the end of the road");
-        road2 = new Room("outside on the road");
-        road3 = new Room("outside on the road");
-        road4 = new Room("outside on the road");
-        road5 = new Room("outside at the end of the road");
+        road1 = new Room("outside at the end of the road", "road1");
+        road2 = new Room("outside on the road", "road2");
+        road3 = new Room("outside on the road", "road3");
+        road4 = new Room("outside on the road", "road4");
+        road5 = new Room("outside at the end of the road", "road5");
         // the rest of the rooms houses, shops, college...
-        dadsHouse = new Room("in your dads house");
-        sadLake = new Room("outside next to the sad lake");
-        momsHouse = new Room("in your moms house");
-        friendA = new Room("in your friend A's house");
-        friendB = new Room("in your friend B's house");
-        icecreamShop = new Room("in the icecream shop");
-        abandonedHouse = new Room("in a abandoned house, its creepy in here");
-        mysteryX = new Room("in mysteryX");
-        work = new Room("at your work");
-        plotOfBMovie = new Room("plot of b movie");
-        lectureHall = new Room("in the lecture hall at the college");
-        collegeLab = new Room("in the college lab");
-        collegeForest = new Room("in the forest behind the college");
-        mtCool = new Room("on top of Mt Cool that makes you cool");
-        secretLab = new Room("in a hidden secret lab");
+        dadsHouse = new Room("in your dads house", "dadsHouse");
+        sadLake = new Room("outside next to the sad lake", "sadLake");
+        momsHouse = new Room("in your moms house", "momsHouse");
+        friendA = new Room("in your friend A's house", "friendA");
+        friendB = new Room("in your friend B's house", "friendB");
+        icecreamShop = new Room("in the icecream shop", "icecreamShop");
+        abandonedHouse = new Room("in a abandoned house, its creepy in here", "abandonedHouse");
+        mysteryX = new Room("in mysteryX", "mysteryX");
+        work = new Room("at your work", "work");
+        plotOfBMovie = new Room("plot of b movie", "plotOfBMovie");
+        lectureHall = new Room("in the lecture hall at the college", "lectureHall");
+        collegeLab = new Room("in the college lab", "collegeLab");
+        collegeForest = new Room("in the forest behind the college", "collegeForest");
+        mtCool = new Room("on top of Mt Cool that makes you cool", "mtCool");
+        secretLab = new Room("in a hidden secret lab", "secretLab");
         
         // initialise room exits
         // for each room list exits in order of north, east, south, west.
@@ -129,7 +132,6 @@ public class Game
         
         secretLab.setExit("south", mtCool);
 
-        currentRoom = dadsHouse;  // start game at dads house
     }
 
     /**
@@ -160,7 +162,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(pc.currentRoom().getLongDescription());
     }
 
     /**
@@ -192,7 +194,7 @@ public class Game
                 break;
                 
             case LOOK:
-                System.out.println(currentRoom.getLongDescription());
+                lookObject(command);
                 break;
                 
             case DANCE:
@@ -202,6 +204,21 @@ public class Game
             case BACK:
                 back(command);
                 break;
+
+            case TAKE:
+                take(command);
+                break;
+                 
+            case DROP:
+                 drop(command);
+                break;
+            
+            case ITEMS:
+                 items(command);
+                 break;
+            case EAT:
+                 eat(command);
+            break;
                 
         }
         return wantToQuit;
@@ -238,15 +255,17 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = pc.currentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            retraceSteps.add(currentRoom);
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+
+            retraceSteps.add(pc.currentRoom());
+            pc.currentRoomNew(nextRoom);
+            System.out.println(pc.currentRoom().getLongDescription());
+
         }
     }
 
@@ -285,9 +304,87 @@ public class Game
         else
         {
             int i = retraceSteps.size();
-            currentRoom = retraceSteps.get(i-1);
+            pc.currentRoomNew(retraceSteps.get(i-1));
             System.out.println(currentRoom.getLongDescription());
             retraceSteps.remove(i-1);
         }
+  
+    /**
+     * lookObject
+     * takes a command object and then returns an object's description based on the second word. 
+     * @param command 
+     */
+    private void lookObject(Command command)
+    {
+        if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("Look at what?");
+            return;
+        }
+        String name = command.getSecondWord(); //giben by player
+        if (pc.currentRoom().isName(name))
+        {
+            //print out the description 
+            System.out.println(pc.currentRoom().getLongDescription());
+        }
+        else
+        {
+            System.out.println("you can't see that from here");
+        }
+    }
+    /**
+     * take 
+     * takes the name of an item as a second word and adds it to inventory of 
+     * @param commmand 
+     */
+    
+    private void take (Command command)
+    {
+         if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("take what?");
+            return;
+        }
+        String name = command.getSecondWord();
+        pc.currentRoom().itemList().addItemFromLocal(name, pc.itemList());
+    }
+    /**
+     * drop
+     * takes the name of an item as a second word and adds it to the room
+     * @param command
+     */
+    private void drop(Command command)
+    {
+         if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("drop what?");
+            return;
+        }
+        String name = command.getSecondWord();
+        pc.itemList().addItemFromLocal(name, pc.currentRoom().itemList());
+    }
+    /**
+     * items
+     * prints the items from the player's inventory
+     */
+    private void items( Command command)
+    {
+        pc.itemList().printItemIndex();
+    }
+    private void eat(Command command)
+    {
+        
+         if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("eat what?");
+            return;
+        }
+        String name = command.getSecondWord();
+        pc.itemList().consume(name);
+
     }
 }

@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -18,19 +19,24 @@ import java.util.Iterator;
 
 public class Room 
 {
+    private String name;
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
-
+    private HashMap<String, Room> exits;// stores exits of this room.
+    private Inventory itemList;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
-     * @param description The room's description.
+     * @param description The room's name
      */
-    public Room(String description) 
+    public Room(String description, String name) 
     {
         this.description = description;
-        exits = new HashMap<>();
+        this.name = name;
+        this.exits = new HashMap<>();
+        this.itemList = new Inventory(this);
+        this.itemList.setLoad();
     }
 
     /**
@@ -40,9 +46,9 @@ public class Room
      */
     public void setExit(String direction, Room neighbor) 
     {
-        exits.put(direction, neighbor);
+        exits.put(direction, neighbor); //defines neighbors
     }
-
+ 
     /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
@@ -60,7 +66,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getExitString() ;
     }
 
     /**
@@ -70,6 +76,7 @@ public class Room
      */
     private String getExitString()
     {
+        itemList.printItemIndex();
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
@@ -88,5 +95,31 @@ public class Room
     {
         return exits.get(direction);
     }
+    /**
+     * isName
+     * boolean to check if the calling name is the same as the name of the  object
+     */
+    public boolean isName (String name)
+    {
+        if(this.name.equals(name))
+        {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * toString
+     * @overrides toString
+     */
+    public String toString ()
+    {
+        return name;
+    }
+    public Inventory itemList()
+    {
+        return this.itemList;
+    }
+    
+    
 }
 
