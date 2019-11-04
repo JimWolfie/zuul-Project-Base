@@ -198,11 +198,16 @@ public class Game
                 break;
             
             case TAKE:
-                
+                take(command);
                 break;
                  
             case DROP:
+                 drop(command);
                 break;
+            case ITEMS:
+                 items(command);
+                 break;
+                
         }
         return wantToQuit;
     }
@@ -320,5 +325,13 @@ public class Game
         }
         String name = command.getSecondWord();
         pc.itemList().addItemFromLocal(name, pc.currentRoom().itemList());
+    }
+    /**
+     * items
+     * prints the items from the player's inventory
+     */
+    private void items( Command command)
+    {
+        pc.itemList().printItemIndex();
     }
 }

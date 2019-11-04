@@ -67,7 +67,7 @@ public class Inventory
                 found =true;
                 if(this.loadSafe(i) == true)
                 {
-                    this.rLoad = rLoad+=i.giveWeight();
+                    
                     destination.addTo(new Item(i));
                     this.itemList.remove(i);
                     System.out.println("success");
@@ -78,6 +78,10 @@ public class Inventory
         }
         System.out.println("failure to find");
     }
+    /**
+     * consume 
+     * implements magic cookie thing. 
+     */
     public void consume (String name)
     {
         boolean found = false;
@@ -116,21 +120,17 @@ public class Inventory
      */
     public void addTo(Item i)
     {
-            if(this.loadSafe(i)==true)
-            {
-                if(!(maxLoad == -1))
-                {
-                    this.rLoad-=i.giveWeight();
-                    System.out.print("load increased");
-                }
-                this.itemList.add(i);
-                System.out.print("item added");
-                return;
-            }
+        if(this.loadSafe(i)==true)
+        {
+              this.rLoad += loadCorrect(i.giveWeight());
+              this.itemList.add(i);
+              System.out.print("item added");
+              return;
+        }
             System.out.print("loadsafe == false");
     }
     
-        /**
+     /**
      * giveLocation
      * String representation of location object
      * @return name -
@@ -144,7 +144,6 @@ public class Inventory
             return t.toString();
         }
         return null; 
-        
     }
     /**
      * moveItem
@@ -173,7 +172,9 @@ public class Inventory
         return name;
     }
     /**
-     * 
+     * load safe
+     * @param item - checks if room or player
+     * @return - true if safe
      */
     public boolean loadSafe(Item i)
     {
@@ -193,5 +194,18 @@ public class Inventory
             return true;
         }
      return true;
+    }
+    /**
+     * loadCorrect
+     * @param int i - item's weight
+     * @return int- value to adjust for room or player's rLoad
+     */
+    public int loadCorrect(int i)
+    {
+        if (this.maxLoad == -1)
+        {
+            return 0;
+        }
+        return i;
     }
 }
