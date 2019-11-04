@@ -32,7 +32,6 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        this.pc = new Player ("player", dadsHouse);
         retraceSteps = new ArrayList<Room>();
         retraceSteps.add(pc.currentRoom()); // this is the last place you can go back to 
     }
@@ -131,6 +130,8 @@ public class Game
         mtCool.setExit("west", collegeForest);
         
         secretLab.setExit("south", mtCool);
+        
+        this.pc = new Player ("player", dadsHouse);
 
     }
 
@@ -261,11 +262,9 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
-
             retraceSteps.add(pc.currentRoom());
             pc.currentRoomNew(nextRoom);
             System.out.println(pc.currentRoom().getLongDescription());
-
         }
     }
 
@@ -305,9 +304,10 @@ public class Game
         {
             int i = retraceSteps.size();
             pc.currentRoomNew(retraceSteps.get(i-1));
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(pc.currentRoom().getLongDescription());
             retraceSteps.remove(i-1);
         }
+    }
   
     /**
      * lookObject
