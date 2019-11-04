@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,6 +21,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private ArrayList<Room> retraceSteps; // used for the back command to retrace steps
         
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +30,8 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        retraceSteps = new ArrayList<Room>();
+        retraceSteps.add(currentRoom); // this is the last place you can go back to 
     }
 
     /**
@@ -193,6 +198,11 @@ public class Game
             case DANCE:
                 System.out.println("Calm down this isn't Fortnite.");
                 break;
+                
+            case BACK:
+                back(command);
+                break;
+                
         }
         return wantToQuit;
     }
@@ -234,6 +244,7 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+            retraceSteps.add(currentRoom);
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
@@ -252,6 +263,31 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+    }
+    
+    /**
+     * "Back" was entered so go back to the last room the player was in before the current room
+     * also remove the last room from retracesteps so you can keep going back
+     */
+    private void back (Command command)
+    {
+        if(command.hasSecondWord())
+        {
+            System.out.println("If you want to go back to the room before this one simply type 'Back' and nothing else");
+            return;
+        }
+        
+        if(retraceSteps.size() == 1)
+        {
+            System.out.println("You cant go back any father this is where you started.");
+        }
+        else
+        {
+            int i = retraceSteps.size();
+            currentRoom = retraceSteps.get(i-1);
+            System.out.println(currentRoom.getLongDescription());
+            retraceSteps.remove(i-1);
         }
     }
 }
