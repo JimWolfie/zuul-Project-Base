@@ -204,9 +204,13 @@ public class Game
             case DROP:
                  drop(command);
                 break;
+            
             case ITEMS:
                  items(command);
                  break;
+            case EAT:
+                 eat(command);
+            break;
                 
         }
         return wantToQuit;
@@ -333,5 +337,17 @@ public class Game
     private void items( Command command)
     {
         pc.itemList().printItemIndex();
+    }
+    private void eat(Command command)
+    {
+        
+         if(!command.hasSecondWord()) 
+        {
+            // if there is no second word, we don't know what to print...
+            System.out.println("eat what?");
+            return;
+        }
+        String name = command.getSecondWord();
+        pc.itemList().consume(name);
     }
 }

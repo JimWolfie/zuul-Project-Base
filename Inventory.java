@@ -16,6 +16,7 @@ public class Inventory
     private String name;
     private int maxLoad;
     private int rLoad;
+    private boolean consumable;
 
     /**
      * Constructor for objects of class Inventory
@@ -27,6 +28,7 @@ public class Inventory
         this.name = location.toString();
         this.maxLoad = -1;
         this.rLoad = 0;
+        this.consumable = false;
     }
     /**
      * setLoad
@@ -89,7 +91,7 @@ public class Inventory
         while(found == false && it.hasNext())
         {
             Item i = (Item)it.next();
-            if(i.giveName().equals(name))
+            if(i.giveName().equals(name)&& this.consumable==true)
             {
                 if(this.loadSafe(i) == true)
                 {
@@ -207,5 +209,17 @@ public class Inventory
             return 0;
         }
         return i;
+    }
+    /**
+     * isConsumable 
+     * sets consumable to true if item is magic cookie (should be enum)
+     */
+    private void isConsumable()
+    {
+        if(this.name.equals("magic_cookie"))
+        {
+            this.consumable =true;
+            
+        }
     }
 }
