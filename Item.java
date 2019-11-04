@@ -70,7 +70,7 @@ public class Item
         return description;
     }
     
-       /**
+     /**
      * printDescription
      * prints the description of the item
      

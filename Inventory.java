@@ -112,8 +112,8 @@ public class Inventory
         System.out.println("Items found here: ");
         for(Item i : itemList)
         {
-           System.out.print(""+i);
-           i.printName();           
+           System.out.print(""+i.giveName());
+           System.out.println("\n");         
         }
     }
     /**

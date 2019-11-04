@@ -132,6 +132,8 @@ public class Game
         secretLab.setExit("south", mtCool);
         
         this.pc = new Player ("player", dadsHouse);
+        
+        friendA.itemList().addTo(new Item ("unlocks door", "key", 1));
 
     }
 

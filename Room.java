@@ -115,6 +115,7 @@ public class Room
     {
         return name;
     }
+    
     public Inventory itemList()
     {
         return this.itemList;
