@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -18,8 +20,10 @@
 public class Game 
 {
     private Parser parser;
-    
+    private Room currentRoom;
+    private ArrayList<Room> retraceSteps; // used for the back command to retrace steps
     private Player pc;
+
         
     /**
      * Create the game and initialise its internal map.
@@ -28,6 +32,9 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        this.pc = new Player ("player", dadsHouse);
+        retraceSteps = new ArrayList<Room>();
+        retraceSteps.add(pc.currentRoom()); // this is the last place you can go back to 
     }
 
     /**
@@ -124,10 +131,7 @@ public class Game
         mtCool.setExit("west", collegeForest);
         
         secretLab.setExit("south", mtCool);
-        
-        this.pc = new Player ("player", dadsHouse);
 
-        //currentRoom = dadsHouse;  // start game at dads house
     }
 
     /**
@@ -196,7 +200,11 @@ public class Game
             case DANCE:
                 System.out.println("Calm down this isn't Fortnite.");
                 break;
-            
+                
+            case BACK:
+                back(command);
+                break;
+
             case TAKE:
                 take(command);
                 break;
@@ -253,8 +261,11 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+
+            retraceSteps.add(pc.currentRoom());
             pc.currentRoomNew(nextRoom);
             System.out.println(pc.currentRoom().getLongDescription());
+
         }
     }
 
@@ -273,6 +284,31 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+    
+    /**
+     * "Back" was entered so go back to the last room the player was in before the current room
+     * also remove the last room from retracesteps so you can keep going back
+     */
+    private void back (Command command)
+    {
+        if(command.hasSecondWord())
+        {
+            System.out.println("If you want to go back to the room before this one simply type 'Back' and nothing else");
+            return;
+        }
+        
+        if(retraceSteps.size() == 1)
+        {
+            System.out.println("You cant go back any father this is where you started.");
+        }
+        else
+        {
+            int i = retraceSteps.size();
+            pc.currentRoomNew(retraceSteps.get(i-1));
+            System.out.println(currentRoom.getLongDescription());
+            retraceSteps.remove(i-1);
+        }
+  
     /**
      * lookObject
      * takes a command object and then returns an object's description based on the second word. 
@@ -349,5 +385,6 @@ public class Game
         }
         String name = command.getSecondWord();
         pc.itemList().consume(name);
+
     }
 }
