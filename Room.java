@@ -46,13 +46,9 @@ public class Room
      */
     public void setExit(String direction, Room neighbor) 
     {
-        exits.put(direction, neighbor); //defines neighbors 
-        exits.putIfAbsent("self", this); //defines itself as its own neighbor
-        //self defined for completion reasons 
+        exits.put(direction, neighbor); //defines neighbors
     }
-   
-    
-
+ 
     /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
