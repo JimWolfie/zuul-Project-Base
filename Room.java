@@ -36,6 +36,7 @@ public class Room
         this.name = name;
         this.exits = new HashMap<>();
         this.itemList = new Inventory(this);
+        this.itemList.setLoad();
     }
 
     /**

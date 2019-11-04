@@ -22,6 +22,7 @@ public class Player
         this.name = name;
         this.currentRoom = currentRoom;
         this.itemList = new Inventory(this);
+        this.itemList.setLoad(200);
     }
 
     /**

@@ -14,6 +14,8 @@ public class Inventory
     private ArrayList<Item> itemList;
     private HashMap<String, Object> location;
     private String name;
+    private int maxLoad;
+    private int rLoad;
 
     /**
      * Constructor for objects of class Inventory
@@ -23,11 +25,33 @@ public class Inventory
         this.itemList = new ArrayList<Item>();
         this.location = new HashMap <String, Object>();
         this.name = location.toString();
+        this.maxLoad = -1;
+        this.rLoad = 0;
+    }
+    /**
+     * setLoad
+     * sets the load of the player added to argument 
+     * sets the max load of this invenetory
+     * @param p = some max load 
+     */
+    public void setLoad(int p)
+    {
+       maxLoad =p;
+       rLoad = maxLoad;
+    }
+    /**
+     * setLoad 
+     * sets the load of room object
+     */
+    public void setLoad()
+    {
+        maxLoad = -1;
+        rLoad = -1;
     }
 
     /**
      * addItemFromLocal
-     * finds the item in the list, adds it if its there.
+     * finds the item in the list, adds it if its there and not too heavy or would exceed load
      * @param orgin -name of item to find
      * @param destination- Inventory of the object you want to add the item to
      */
@@ -41,13 +65,37 @@ public class Inventory
             if(i.giveName().equals(name))
             {
                 found =true;
-                destination.addTo(new Item(i));
-                this.itemList.remove(i);
-                System.out.println("success");
+                if(this.loadSafe(i) == true)
+                {
+                    this.rLoad = rLoad+=i.giveWeight();
+                    destination.addTo(new Item(i));
+                    this.itemList.remove(i);
+                    System.out.println("success");
+                    return;
+                }
+                
             }
         }
-        
-        
+        System.out.println("failure to find");
+    }
+    public void consume (String name)
+    {
+        boolean found = false;
+        Iterator it = itemList.iterator();
+        while(found == false && it.hasNext())
+        {
+            Item i = (Item)it.next();
+            if(i.giveName().equals(name))
+            {
+                if(this.loadSafe(i) == true)
+                {
+                    this.maxLoad += i.giveWeight();
+                    this.itemList.remove(i);
+                    System.out.println("success");
+                    return;
+                }
+            }
+        }
     }
     /**
      * printItemIndex
@@ -62,11 +110,26 @@ public class Inventory
            i.printName();           
         }
     }
-    
+    /**
+     * addTo
+     * @param item - item to add into the arrayList
+     */
     public void addTo(Item i)
     {
-        this.itemList.add(i);
+            if(this.loadSafe(i)==true)
+            {
+                if(!(maxLoad == -1))
+                {
+                    this.rLoad-=i.giveWeight();
+                    System.out.print("load increased");
+                }
+                this.itemList.add(i);
+                System.out.print("item added");
+                return;
+            }
+            System.out.print("loadsafe == false");
     }
+    
         /**
      * giveLocation
      * String representation of location object
@@ -85,8 +148,7 @@ public class Inventory
     }
     /**
      * moveItem
-     * assigns the item to a location
-     * locations are Inventories
+     * locations are player objects or room objects
      * @param location - room / player its found on
      */
     public void moveItem(Object local)
@@ -109,5 +171,27 @@ public class Inventory
     public String toString ()
     {
         return name;
+    }
+    /**
+     * 
+     */
+    public boolean loadSafe(Item i)
+    {
+        if(!(this.maxLoad == -1))
+        {
+            if(i.giveWeight()> maxLoad)
+            {
+                    System.out.println("too heavy. can't pick up");
+                    return false;
+            }
+            if( i.giveWeight() > rLoad )
+            {
+                     System.out.println("not enough remaining weight");
+                     return false;
+            }
+            
+            return true;
+        }
+     return true;
     }
 }
